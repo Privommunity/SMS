@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>情報送信ページ</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    input, textarea, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    button {
+      background-color: #06c755;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #05a84d;
+    }
+    .fixed-address {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>情報入力フォーム</h2>
+  
+  <label>住所</label>
+  <div class="fixed-address">石巻市恵み野二丁目</div>
+  <input type="text" id="addressDetail" placeholder="12-34 など（番地を入力）">
+  
+  <label>建物名</label>
+  <input type="text" id="building" placeholder="恵み野アパート １０１号">
+  
+  <label>氏名</label>
+  <input type="text" id="name" placeholder="石巻 太郎">
+  
+  <label>メッセージ</label>
+  <textarea id="message" placeholder="振り込み完了しました"></textarea>
+
+  <button onclick="sendToLINE()">LINEに戻る</button>
+</div>
+
+<script>
+function sendToLINE() {
+  const addressDetail = document.getElementById('addressDetail').value.trim();
+  const building = document.getElementById('building').value.trim();
+  const name = document.getElementById('name').value.trim();
+  const messageText = document.getElementById('message').value.trim();
+  
+  const fullAddress = `石巻市恵み野二丁目${addressDetail ? ' ' + addressDetail : ''}`;
+
+  const message = `住所＊\n${fullAddress}\n建物名＊\n${building}\n氏名＊\n${name}\nメッセージ＊\n${messageText}`;
+  const encodedMessage = encodeURIComponent(message);
+  
+  const lineUrl = `https://line.me/R/oaMessage/@973ycefu/?${encodedMessage}`;
+  
+  window.location.href = lineUrl;
+}
+</script>
+
+</body>
+</html>
