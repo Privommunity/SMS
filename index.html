@@ -252,7 +252,7 @@ function sendToLINE() {
   const messageText = document.getElementById('message').value.trim();
   
   const fullAddress = `石巻市恵み野二丁目${addressDetail ? ' ' + addressDetail : ''}`;
-  const message = `住所＊\n${fullAddress}\n建物名＊\n${building}\n氏名＊\n${name}\nメッセージ＊\n${messageText}`;
+  const message = `◆住所\n${fullAddress}\n◆建物名\n${building}\n◆氏名\n${name}\n◆メッセージ\n${messageText}`;
   const encodedMessage = encodeURIComponent(message);
   
   const lineUrl = `https://line.me/R/oaMessage/@973ycefu/?${encodedMessage}`;
