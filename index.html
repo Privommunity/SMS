@@ -5,77 +5,253 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>情報送信ページ</title>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      background: #f0f0f0;
+    :root {
+      --primary-color: #06c755;
+      --primary-dark: #05a84d;
+      --text-color: #333;
+      --light-grey: #f8f8f8;
+      --border-color: #e0e0e0;
+      --error-color: #e74c3c;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+      --transition: all 0.3s ease;
     }
-    .container {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 500px;
-      margin: 0 auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    input, textarea, button {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+    
+    * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
+    
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
+      background-color: #f5f5f5;
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .form-content {
+      padding: 25px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #555;
+    }
+    
+    .fixed-address {
+      background-color: var(--light-grey);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    input, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: var(--transition);
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(6, 199, 85, 0.3);
+      border-color: var(--primary-color);
+    }
+    
     textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 120px;
     }
+    
+    .error {
+      color: var(--error-color);
+      font-size: 14px;
+      margin-top: 5px;
+      display: none;
+    }
+    
     button {
-      background-color: #06c755;
+      background-color: var(--primary-color);
       color: white;
+      width: 100%;
+      padding: 14px;
       border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
+    
     button:hover {
-      background-color: #05a84d;
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
     }
-    .fixed-address {
-      font-weight: bold;
-      margin-top: 10px;
+    
+    button:active {
+      transform: translateY(0);
     }
+    
+    .line-icon {
+      margin-right: 8px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        border-radius: 12px;
+      }
+      
+      .form-content {
+        padding: 20px;
+      }
+    }
+    
+    /* 入力フィールドのアニメーション */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .form-group {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.2s; }
+    .form-group:nth-child(3) { animation-delay: 0.3s; }
+    .form-group:nth-child(4) { animation-delay: 0.4s; }
+    .form-group:nth-child(5) { animation-delay: 0.5s; }
   </style>
 </head>
 <body>
-
 <div class="container">
-  <h2>情報入力フォーム</h2>
+  <div class="header">
+    <h2>情報入力フォーム</h2>
+  </div>
   
-  <label>住所</label>
-  <div class="fixed-address">石巻市恵み野二丁目</div>
-  <input type="text" id="addressDetail" placeholder="12-34 など（番地を入力）">
-  
-  <label>建物名</label>
-  <input type="text" id="building" placeholder="恵み野アパート １０１号">
-  
-  <label>氏名</label>
-  <input type="text" id="name" placeholder="石巻 太郎">
-  
-  <label>メッセージ</label>
-  <textarea id="message" placeholder="振り込み完了しました"></textarea>
-
-  <button onclick="sendToLINE()">LINEに戻る</button>
+  <div class="form-content">
+    <div class="form-group">
+      <label for="addressDetail">住所</label>
+      <div class="fixed-address">石巻市恵み野二丁目</div>
+      <input type="text" id="addressDetail" placeholder="番地を入力（例：12-34）">
+      <div class="error" id="addressError">番地を入力してください</div>
+    </div>
+    
+    <div class="form-group">
+      <label for="building">建物名</label>
+      <input type="text" id="building" placeholder="例：恵み野アパート １０１号">
+      <div class="error" id="buildingError">建物名を入力してください</div>
+    </div>
+    
+    <div class="form-group">
+      <label for="name">氏名</label>
+      <input type="text" id="name" placeholder="例：石巻 太郎">
+      <div class="error" id="nameError">氏名を入力してください</div>
+    </div>
+    
+    <div class="form-group">
+      <label for="message">メッセージ</label>
+      <textarea id="message" placeholder="例：振り込み完了しました"></textarea>
+      <div class="error" id="messageError">メッセージを入力してください</div>
+    </div>
+    
+    <div class="form-group">
+      <button onclick="sendToLINE()">
+        <svg class="line-icon" viewBox="0 0 24 24" fill="white">
+          <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.793 4.264 8.8 10.036 9.57.391.082.923.258 1.058.59.121.301.079.766.039 1.066l-.172 1.032c-.05.303-.24 1.187 1.04.647s6.911-4.068 9.428-6.967c1.737-1.901 2.57-3.842 2.57-5.938z"/>
+        </svg>
+        LINEに送信する
+      </button>
+    </div>
+  </div>
 </div>
 
 <script>
+function validateForm() {
+  let isValid = true;
+  const fields = [
+    { id: 'addressDetail', errorId: 'addressError' },
+    { id: 'building', errorId: 'buildingError' },
+    { id: 'name', errorId: 'nameError' },
+    { id: 'message', errorId: 'messageError' }
+  ];
+  
+  // エラー表示をリセット
+  fields.forEach(field => {
+    document.getElementById(field.errorId).style.display = 'none';
+  });
+  
+  // 各フィールドを検証
+  fields.forEach(field => {
+    const value = document.getElementById(field.id).value.trim();
+    if (!value) {
+      document.getElementById(field.errorId).style.display = 'block';
+      isValid = false;
+      
+      // エラーのある入力フィールドをハイライト
+      document.getElementById(field.id).style.borderColor = 'var(--error-color)';
+    } else {
+      document.getElementById(field.id).style.borderColor = 'var(--border-color)';
+    }
+  });
+  
+  return isValid;
+}
+
 function sendToLINE() {
+  if (!validateForm()) {
+    return false;
+  }
+  
   const addressDetail = document.getElementById('addressDetail').value.trim();
   const building = document.getElementById('building').value.trim();
   const name = document.getElementById('name').value.trim();
   const messageText = document.getElementById('message').value.trim();
   
   const fullAddress = `石巻市恵み野二丁目${addressDetail ? ' ' + addressDetail : ''}`;
-
   const message = `住所＊\n${fullAddress}\n建物名＊\n${building}\n氏名＊\n${name}\nメッセージ＊\n${messageText}`;
   const encodedMessage = encodeURIComponent(message);
   
@@ -83,7 +259,22 @@ function sendToLINE() {
   
   window.location.href = lineUrl;
 }
-</script>
 
+// 入力フィールドにフォーカスが当たった時にエラー表示を消す
+document.querySelectorAll('input, textarea').forEach(el => {
+  el.addEventListener('focus', function() {
+    this.style.borderColor = 'var(--primary-color)';
+    const fieldId = this.id;
+    const errorId = fieldId + 'Error';
+    document.getElementById(errorId).style.display = 'none';
+  });
+  
+  el.addEventListener('blur', function() {
+    if (this.value.trim() === '') {
+      this.style.borderColor = 'var(--border-color)';
+    }
+  });
+});
+</script>
 </body>
 </html>
