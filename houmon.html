@@ -9,7 +9,7 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
   />
-  <!-- Optional: 日本語ローカライズ -->
+  <!-- Flatpickr テーマ（任意） -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css"
@@ -72,20 +72,21 @@
       // 日本語ローカライズ
       flatpickr.localize(flatpickr.l10ns.ja);
 
-      // 日付ピッカー設定
+      // 希望日ピッカー設定
       flatpickr("#date", {
         dateFormat: "Y-m-d",
         minDate: "today",
         disable: [
-          // 水曜日を無効化（0=日曜,1=月曜,…,3=水曜）
+          // 水曜日を無効化（0=日曜,1=月曜,...,3=水曜）
           function(date) { return date.getDay() === 3; },
           // 別途指定の無効日
           "2025-05-10"
         ]
       });
 
-      // 時間ピッカー設定
+      // 希望時間ピッカー設定（disableMobile: true を追加）
       flatpickr("#time", {
+        disableMobile: true,
         enableTime: true,
         noCalendar: true,
         dateFormat: "H:i",
