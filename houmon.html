@@ -17,33 +17,39 @@
   <style>
     body { font-family: sans-serif; padding: 20px; }
     .form-group { margin-bottom: 1em; }
-    label { display: block; margin-bottom: .5em; }
-    input, button { width: 100%; padding: .5em; font-size: 1em; }
-    button { cursor: pointer; }
+    label { display: block; margin-bottom: .5em; font-weight: bold; }
+    input, button { font-size: 1em; }
+    input { width: 100%; padding: .5em; box-sizing: border-box; }
+    button { padding: .5em 1em; margin: .25em; cursor: pointer; }
+    #hourPicker, #minutePicker {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    #timeDisplay {
+      margin-top: .5em;
+      font-style: italic;
+      color: #555;
+    }
   </style>
 </head>
 <body>
   <h1>訪問希望日程調整</h1>
+
   <div class="form-group">
-    <label>住所</label>
+    <label>住所（固定）</label>
     <input type="text" value="石巻市恵み野二丁目" disabled />
   </div>
+
   <div class="form-group">
-    <label for="addressSuffix">番地以降</label>
-    <input
-      type="text"
-      id="addressSuffix"
-      placeholder="例：1-2恵み野アパート101"
-    />
+    <label for="addressSuffix">番地（例：○-○-○）</label>
+    <input type="text" id="addressSuffix" placeholder="○-○-○" />
   </div>
+
   <div class="form-group">
     <label for="name">氏名</label>
-    <input
-      type="text"
-      id="name"
-      placeholder="石巻太郎"
-    />
+    <input type="text" id="name" placeholder="石巻太郎" />
   </div>
+
   <div class="form-group">
     <label for="date">希望日</label>
     <input
@@ -53,15 +59,15 @@
       readonly
     />
   </div>
+
   <div class="form-group">
-    <label for="time">希望時間</label>
-    <input
-      type="text"
-      id="time"
-      placeholder="時間を選択"
-      readonly
-    />
+    <label>希望時間</label>
+    <div id="hourPicker"></div>
+    <div id="minutePicker" style="display: none;"></div>
+    <input type="hidden" id="time" />
+    <div id="timeDisplay">選択された時間：--:--</div>
   </div>
+
   <button id="submitBtn">LINE へ送信</button>
 
   <!-- Flatpickr JS -->
@@ -81,22 +87,50 @@
           function(date) { return date.getDay() === 3; },
           // 別途指定の無効日
           "2025-05-10"
-           "2025-05-18"
-           "2025-05-31"
         ]
       });
 
-      // 希望時間ピッカー設定（disableMobile: true を追加）
-      flatpickr("#time", {
-        disableMobile: true,
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: true,
-        minuteIncrement: 15,
-        minTime: "15:00",
-        maxTime: "19:00"
+      // 時間ピッカー（カスタムUI）
+      const hourPicker = document.getElementById('hourPicker');
+      const minutePicker = document.getElementById('minutePicker');
+      const timeInput    = document.getElementById('time');
+      const timeDisplay  = document.getElementById('timeDisplay');
+
+      // 時間帯（15:00～19:00）をボタンとして生成
+      [15,16,17,18,19].forEach(hour => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = `${hour}:00`;
+        btn.addEventListener('click', () => {
+          showMinutes(hour);
+        });
+        hourPicker.appendChild(btn);
       });
+
+      // 分選択UIを表示
+      function showMinutes(hour) {
+        minutePicker.innerHTML = '';
+        [0,15,30,45].forEach(min => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const hh = hour.toString().padStart(2,'0');
+          const mm = min.toString().padStart(2,'0');
+          btn.textContent = `${hh}:${mm}`;
+          btn.addEventListener('click', () => {
+            selectTime(hh, mm);
+          });
+          minutePicker.appendChild(btn);
+        });
+        minutePicker.style.display = 'flex';
+      }
+
+      // 時間確定
+      function selectTime(hh, mm) {
+        const selected = `${hh}:${mm}`;
+        timeInput.value = selected;
+        timeDisplay.textContent = `選択された時間：${selected}`;
+        minutePicker.style.display = 'none';
+      }
 
       // 送信ボタン動作
       document.getElementById("submitBtn").addEventListener("click", function() {
