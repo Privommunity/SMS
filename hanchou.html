@@ -152,13 +152,13 @@
   <div id="infoModal" class="modal">
     <div class="modal-content">
       <h2 class="modal-title">お知らせ</h2>
-      <p class="modal-text">班長宅に訪問頂きます。<br>ご希望の日時を入力してください。</p>
+      <p class="modal-text">必要事項を入力後、末尾のボタンを押すとLINE画面に戻ります。<br>戻りましたら、入力内容をそのまま送信してください。</p>
       <button class="modal-btn" id="modalCloseBtn">了解しました</button>
     </div>
   </div>
 
   <div class="container">
-    <h1>町内会費訪問希望日程調整</h1>
+    <h1>班長宅訪問希望日程調整</h1>
     <form id="visitForm">
       <div class="form-group">
         <label for="address">住所</label>
@@ -190,7 +190,7 @@
         <div class="error" id="timeError">時間を選択してください</div>
       </div>
       <button type="submit" id="submitBtn" class="submit-btn">
-        <span> LINEに戻り送信する</span>
+        <span>LINEに戻り送信する</span>
       </button>
     </form>
   </div>
@@ -202,21 +202,21 @@
       const modal = document.getElementById('infoModal');
       const modalCloseBtn = document.getElementById('modalCloseBtn');
       modal.style.display = 'flex';
-      modalCloseBtn.addEventListener('click', function() { modal.style.display = 'none'; });
+      modalCloseBtn.addEventListener('click', () => { modal.style.display = 'none'; });
 
       const form = document.getElementById('visitForm');
       const addressSuffix = document.getElementById('addressSuffix');
-      const nameInput = document.getElementById('name');
-      const dateInput = document.getElementById('date');
-      const timeInput = document.getElementById('time');
-      const hourPicker = document.getElementById('hourPicker');
-      const minutePicker = document.getElementById('minutePicker');
-      const timeDisplay = document.getElementById('timeDisplay');
-      const submitBtn = document.getElementById('submitBtn');
+      const nameInput     = document.getElementById('name');
+      const dateInput     = document.getElementById('date');
+      const timeInput     = document.getElementById('time');
+      const hourPicker    = document.getElementById('hourPicker');
+      const minutePicker  = document.getElementById('minutePicker');
+      const timeDisplay   = document.getElementById('timeDisplay');
+      const submitBtn     = document.getElementById('submitBtn');
       const addressSuffixError = document.getElementById('addressSuffixError');
-      const nameError = document.getElementById('nameError');
-      const dateError = document.getElementById('dateError');
-      const timeError = document.getElementById('timeError');
+      const nameError          = document.getElementById('nameError');
+      const dateError          = document.getElementById('dateError');
+      const timeError          = document.getElementById('timeError');
 
       flatpickr.localize(flatpickr.l10ns.ja);
       flatpickr("#date", {
@@ -233,8 +233,9 @@
 
       [15,16,17,18,19].forEach(hour => {
         const btn = document.createElement('button');
-        btn.type = 'button'; btn.className = 'time-btn hour-btn';
-        btn.textContent = ${hour}時台;
+        btn.type = 'button';
+        btn.className = 'time-btn hour-btn';
+        btn.textContent = `${hour}時台`;
         btn.dataset.hour = hour;
         btn.addEventListener('click', () => {
           document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
@@ -243,17 +244,18 @@
           const minutes = (hour === 19) ? [0] : [0,15,30,45];
           minutes.forEach(min => {
             const mBtn = document.createElement('button');
-            mBtn.type = 'button'; mBtn.className = 'time-btn minute-btn';
+            mBtn.type = 'button';
+            mBtn.className = 'time-btn minute-btn';
             const hh = hour.toString().padStart(2,'0');
             const mm = min.toString().padStart(2,'0');
-            mBtn.textContent = ${hh}:${mm};
+            mBtn.textContent = `${hh}:${mm}`;
             mBtn.dataset.minute = mm;
             mBtn.addEventListener('click', () => {
               document.querySelectorAll('.minute-btn').forEach(b => b.classList.remove('selected'));
               mBtn.classList.add('selected');
-              const selected = ${hh}:${mm};
+              const selected = `${hh}:${mm}`;
               timeInput.value = selected;
-              timeDisplay.textContent = 選択された時間：${selected};
+              timeDisplay.textContent = `選択された時間：${selected}`;
               timeError.style.display = 'none';
             });
             minutePicker.appendChild(mBtn);
@@ -266,18 +268,42 @@
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         let isValid = true;
-        if (!addressSuffix.value.trim()) { addressSuffixError.style.display = 'block'; isValid = false; } else { addressSuffixError.style.display = 'none'; }
-        if (!nameInput.value.trim()) { nameError.style.display = 'block'; isValid = false; } else { nameError.style.display = 'none'; }
-        if (!dateInput.value) { dateError.style.display = 'block'; isValid = false; } else { dateError.style.display = 'none'; }
-        if (!timeInput.value) { timeError.style.display = 'block'; isValid = false; } else { timeError.style.display = 'none'; }
+        if (!addressSuffix.value.trim()) {
+          addressSuffixError.style.display = 'block'; isValid = false;
+        } else {
+          addressSuffixError.style.display = 'none';
+        }
+        if (!nameInput.value.trim()) {
+          nameError.style.display = 'block'; isValid = false;
+        } else {
+          nameError.style.display = 'none';
+        }
+        if (!dateInput.value) {
+          dateError.style.display = 'block'; isValid = false;
+        } else {
+          dateError.style.display = 'none';
+        }
+        if (!timeInput.value) {
+          timeError.style.display = 'block'; isValid = false;
+        } else {
+          timeError.style.display = 'none';
+        }
         if (!isValid) return;
+
         const original = submitBtn.innerHTML;
         submitBtn.innerHTML = '<span class="loading"></span>送信中...';
         submitBtn.disabled = true;
-        const message = 住所：石巻市恵み野二丁目${addressSuffix.value.trim()}\n氏名：${nameInput.value.trim()}\n希望日：${dateInput.value}\n希望時間：${timeInput.value}\n上記内容にて班長宅での支払いを希望します。;
+
+        const message = 
+`住所：石巻市恵み野二丁目${addressSuffix.value.trim()}
+氏名：${nameInput.value.trim()}
+希望日：${dateInput.value}
+希望時間：${timeInput.value}
+上記内容にて班長宅での支払いを希望します。`;
+
         const encoded = encodeURIComponent(message);
         setTimeout(() => {
-          window.location.href = https://line.me/R/oaMessage/@973ycefu/?${encoded};
+          window.location.href = `https://line.me/R/oaMessage/@973ycefu?text=${encoded}`;
           submitBtn.innerHTML = original;
           submitBtn.disabled = false;
         }, 500);
