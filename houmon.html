@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>町内会費訪問希望日程調整</title>
+  <!-- Flatpickr CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+  />
+  <!-- Optional: 日本語ローカライズ -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css"
+  />
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .form-group { margin-bottom: 1em; }
+    label { display: block; margin-bottom: .5em; }
+    input, button { width: 100%; padding: .5em; font-size: 1em; }
+    button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>訪問希望日程調整</h1>
+  <div class="form-group">
+    <label>住所（固定）</label>
+    <input type="text" value="石巻市恵み野二丁目" disabled />
+  </div>
+  <div class="form-group">
+    <label for="addressSuffix">番地（例：○-○-○）</label>
+    <input
+      type="text"
+      id="addressSuffix"
+      placeholder="○-○-○"
+    />
+  </div>
+  <div class="form-group">
+    <label for="name">氏名</label>
+    <input
+      type="text"
+      id="name"
+      placeholder="石巻太郎"
+    />
+  </div>
+  <div class="form-group">
+    <label for="date">希望日</label>
+    <input
+      type="text"
+      id="date"
+      placeholder="日付を選択"
+      readonly
+    />
+  </div>
+  <div class="form-group">
+    <label for="time">希望時間</label>
+    <input
+      type="text"
+      id="time"
+      placeholder="時間を選択"
+      readonly
+    />
+  </div>
+  <button id="submitBtn">LINE へ送信</button>
+
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 日本語ローカライズ
+      flatpickr.localize(flatpickr.l10ns.ja);
+
+      // 日付ピッカー設定
+      flatpickr("#date", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        disable: [
+          // 水曜日を無効化（0=日曜,1=月曜,…,3=水曜）
+          function(date) { return date.getDay() === 3; },
+          // 別途指定の無効日
+          "2025-05-10"
+        ]
+      });
+
+      // 時間ピッカー設定
+      flatpickr("#time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true,
+        minuteIncrement: 15,
+        minTime: "15:00",
+        maxTime: "19:00"
+      });
+
+      // 送信ボタン動作
+      document.getElementById("submitBtn").addEventListener("click", function() {
+        const suffix = document.getElementById("addressSuffix").value.trim();
+        const name   = document.getElementById("name").value.trim();
+        const date   = document.getElementById("date").value;
+        const time   = document.getElementById("time").value;
+        if (!suffix || !name || !date || !time) {
+          alert("すべての項目を入力してください。");
+          return;
+        }
+
+        const message =
+          `住所：石巻市恵み野二丁目${suffix}\n` +
+          `氏名：${name}\n` +
+          `希望日：${date}\n` +
+          `希望時間：${time}`;
+        const encoded = encodeURIComponent(message);
+        const url = `https://line.me/R/oaMessage/@973ycefu/?${encoded}`;
+        // 同一タブで遷移
+        window.location.href = url;
+      });
+    });
+  </script>
+</body>
+</html>
