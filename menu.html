@@ -15,31 +15,26 @@
             min-height: 100vh;
             justify-content: center;
         }
-        
         .container {
             padding: 20px;
             max-width: 100%;
             margin: 0 auto;
         }
-        
         h1 {
             color: #333;
             text-align: center;
             font-size: 7vw;
             margin-bottom: 20px;
         }
-        
         .button-group {
             display: flex;
             flex-direction: column;
             gap: 16px;
             margin-top: 20px;
         }
-        
         .btn {
             display: flex;
             align-items: center;
-            background-color: #4CAF50;
             color: white;
             padding: 16px;
             font-size: 5vw;
@@ -50,44 +45,20 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             position: relative;
         }
-        
         .btn:after {
             content: "→";
             position: absolute;
             right: 20px;
             font-size: 6vw;
         }
-        
-        .btn-cash-home {
-            background-color: #4CAF50;
-        }
-        
-        .btn-cash-visit {
-            background-color: #2196F3;
-        }
-        
-        .btn-bank {
-            background-color: #ff9800;
-        }
-        
-        .btn-paypay {
-            background-color: #f44336;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-        }
-        
-        .btn:active {
-            transform: translateY(2px);
-        }
-        
-        .btn-text {
-            flex: 1;
-            text-align: left;
-            padding-left: 10px;
-        }
-        
+        .btn-cash-home { background-color: #4CAF50; }
+        .btn-cash-visit { background-color: #2196F3; }
+        .btn-bank     { background-color: #ff9800; }
+        .btn-paypay   { background-color: #f44336; }
+        .btn-example  { background-color: #607d8b; }
+        .btn:hover { opacity: 0.9; }
+        .btn:active { transform: translateY(2px); }
+        .btn-text { flex: 1; text-align: left; padding-left: 10px; }
         .btn-number {
             display: inline-block;
             background-color: rgba(255,255,255,0.3);
@@ -98,33 +69,90 @@
             text-align: center;
             font-weight: bold;
         }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            overflow: auto;
+        }
+        .modal-content img {
+            width: 100%;
+            height: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>恵み野東町内会5班</h1>
-        
         <div class="button-group">
             <a href="https://privommunity.github.io/LINE/hanchou.html" class="btn btn-cash-home">
                 <span class="btn-number">1</span>
                 <span class="btn-text">現金（班長宅持参）</span>
             </a>
-            
             <a href="https://privommunity.github.io/LINE/houmon.html" class="btn btn-cash-visit">
                 <span class="btn-number">2</span>
                 <span class="btn-text">現金（各戸訪問）</span>
             </a>
-            
             <a href="https://privommunity.github.io/LINE/" class="btn btn-bank">
                 <span class="btn-number">3</span>
                 <span class="btn-text">振込</span>
             </a>
-            
             <a href="https://privommunity.github.io/paypay/" class="btn btn-paypay">
                 <span class="btn-number">4</span>
                 <span class="btn-text">PayPay送金</span>
             </a>
+            <!-- 新しい項目: メッセージ送信完了後の例 -->
+            <button id="exampleBtn" class="btn btn-example">
+                <span class="btn-text">＊メッセージ送信完了後の例</span>
+            </button>
         </div>
     </div>
+    <!-- モーダル構造 -->
+    <div id="exampleModal" class="modal">
+        <div class="modal-content">
+            <span id="modalClose" class="modal-close">&times;</span>
+            <p>メッセージ送信完了後の例</p>
+            <img src="S__67862625.jpg" alt="メッセージ送信完了後の例">
+        </div>
+    </div>
+    <script>
+        // ポップアップ表示処理
+        document.getElementById('exampleBtn').addEventListener('click', function() {
+            document.getElementById('exampleModal').style.display = 'flex';
+        });
+        // 閉じるボタン
+        document.getElementById('modalClose').addEventListener('click', function() {
+            document.getElementById('exampleModal').style.display = 'none';
+        });
+        // モーダル外をクリックしたら閉じる
+        window.addEventListener('click', function(e) {
+            if (e.target === document.getElementById('exampleModal')) {
+                document.getElementById('exampleModal').style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
