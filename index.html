@@ -1,280 +1,286 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>メッセージ入力ページ</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>振込に関するメッセージ</title>
   <style>
     :root {
-      --primary-color: #06c755;
-      --primary-dark: #05a84d;
+      --primary-color: #06C755;
+      --primary-hover: #05a648;
+      --background-color: #f8f9fa;
       --text-color: #333;
-      --light-grey: #f8f8f8;
-      --border-color: #e0e0e0;
-      --error-color: #e74c3c;
-      --shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
-      --transition: all 0.3s ease;
+      --border-color: #ddd;
+      --error-color: #d9534f;
+      --success-color: #5cb85c;
     }
-    
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-    
     body {
-      font-family: 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
-      background-color: #f5f5f5;
+      font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+      background-color: var(--background-color);
       color: var(--text-color);
       line-height: 1.6;
       padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    
-    .container {
-      background: white;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      width: 100%;
-      max-width: 500px;
-      overflow: hidden;
+      max-width: 600px;
       margin: 0 auto;
     }
-    
-    .header {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 20px;
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: var(--primary-color);
+      margin-bottom: 24px;
       text-align: center;
-    }
-    
-    .header h2 {
-      margin: 0;
       font-size: 1.5rem;
-      font-weight: 700;
+      position: relative;
+      padding-bottom: 10px;
     }
-    
-    .form-content {
-      padding: 25px;
+    h1:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background-color: var(--primary-color);
     }
-    
     .form-group {
       margin-bottom: 20px;
     }
-    
     label {
       display: block;
       margin-bottom: 8px;
-      font-weight: 600;
-      color: #555;
+      font-weight: bold;
+      font-size: 0.9rem;
     }
-    
-    .fixed-address {
-      background-color: var(--light-grey);
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-    
-    input, textarea {
+    input[type="text"] {
       width: 100%;
-      padding: 12px 15px;
+      padding: 10px 12px;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 16px;
-      transition: var(--transition);
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
     }
-    
-    input:focus, textarea:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(6, 199, 85, 0.3);
+    input[type="text"]:focus {
       border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(6, 199, 85, 0.2);
     }
-    
-    textarea {
-      resize: vertical;
-      min-height: 120px;
+    input[disabled] {
+      background-color: #f3f3f3;
+      cursor: not-allowed;
     }
-    
+    .submit-btn {
+      display: block;
+      width: 100%;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+    .submit-btn:hover {
+      background-color: var(--primary-hover);
+    }
     .error {
       color: var(--error-color);
-      font-size: 14px;
+      font-size: 0.85rem;
       margin-top: 5px;
       display: none;
     }
-    
-    button {
-      background-color: var(--primary-color);
-      color: white;
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    /* モーダルのスタイル */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
       justify-content: center;
       align-items: center;
     }
-    
-    button:hover {
-      background-color: var(--primary-dark);
-      transform: translateY(-2px);
+    .modal-content {
+      background-color: white;
+      padding: 24px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      text-align: center;
     }
-    
-    button:active {
-      transform: translateY(0);
+    .modal-title {
+      color: var(--primary-color);
+      margin-bottom: 16px;
+      font-size: 1.2rem;
     }
-    
-    .line-icon {
-      margin-right: 8px;
-      width: 20px;
-      height: 20px;
+    .modal-text {
+      margin-bottom: 24px;
+      line-height: 1.6;
     }
-    
-    @media (max-width: 600px) {
+    .modal-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .modal-btn:hover {
+      background-color: var(--primary-hover);
+    }
+    @media (max-width: 480px) {
       .container {
-        border-radius: 12px;
+        padding: 16px;
       }
-      
-      .form-content {
-        padding: 20px;
+      h1 {
+        font-size: 1.3rem;
       }
     }
-    
-    /* 入力フィールドのアニメーション */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .form-group {
-      animation: fadeIn 0.5s ease-out forwards;
-    }
-    
-    .form-group:nth-child(1) { animation-delay: 0.1s; }
-    .form-group:nth-child(2) { animation-delay: 0.2s; }
-    .form-group:nth-child(3) { animation-delay: 0.3s; }
-    .form-group:nth-child(4) { animation-delay: 0.4s; }
-    .form-group:nth-child(5) { animation-delay: 0.5s; }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <h2>メッセージ入力フォーム</h2>
+  <!-- モーダルダイアログ -->
+  <div id="infoModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title">お知らせ</h2>
+      <p class="modal-text">必要事項を入力後末尾のボタンを押すとLINE画面に戻ります<br>戻りましたら、入力内容をそのまま送信してください。</p>
+      <button class="modal-btn" id="modalCloseBtn">了解しました</button>
+    </div>
   </div>
-  
-  <div class="form-content">
-    <div class="form-group">
-      <label for="addressDetail">住所</label>
-      <div class="fixed-address">石巻市恵み野二丁目</div>
-      <input type="text" id="addressDetail" placeholder="番地を入力（例：12-34）">
-      <div class="error" id="addressError">番地を入力してください</div>
-    </div>
-    
-    <div class="form-group">
-      <label for="building">建物名</label>
-      <input type="text" id="building" placeholder="例：恵み野アパート １０１号">
-      <div class="error" id="buildingError">建物名を入力してください</div>
-    </div>
-    
-    <div class="form-group">
-      <label for="name">氏名</label>
-      <input type="text" id="name" placeholder="例：石巻 太郎">
-      <div class="error" id="nameError">氏名を入力してください</div>
-    </div>
-    
-    <div class="form-group">
-      <label for="message">メッセージ</label>
-      <textarea id="message" placeholder="例：●●名義にて振り込み完了しました"></textarea>
-      <div class="error" id="messageError">メッセージを入力してください</div>
-    </div>
-    
-    <div class="form-group">
-      <button onclick="sendToLINE()">
-        <svg class="line-icon" viewBox="0 0 24 24" fill="white">
-          <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.793 4.264 8.8 10.036 9.57.391.082.923.258 1.058.59.121.301.079.766.039 1.066l-.172 1.032c-.05.303-.24 1.187 1.04.647s6.911-4.068 9.428-6.967c1.737-1.901 2.57-3.842 2.57-5.938z"/>
-        </svg>
-        LINEに戻り送信する
+
+  <div class="container">
+    <h1>振込に関するメッセージ/h1>
+    <form id="visitForm">
+      <div class="form-group">
+        <label for="address">住所</label>
+        <input type="text" id="address" value="石巻市恵み野二丁目" disabled />
+      </div>
+      <div class="form-group">
+        <label for="addressSuffix">番地・建物名・部屋番号</label>
+        <input type="text" id="addressSuffix" placeholder="例：1-2恵み野アパート101" />
+        <div class="error" id="addressSuffixError">番地を入力してください</div>
+      </div>
+      <div class="form-group">
+        <label for="name">氏名</label>
+        <input type="text" id="name" placeholder="例：石巻太郎" />
+        <div class="error" id="nameError">氏名を入力してください</div>
+      </div>
+      <div class="form-group">
+        <label for="message">メッセージ</label>
+        <input type="text" id="message" placeholder="例：宮城花子名義にて振込完了しました。" />
+        <div class="error" id="messageError">メッセージを入力してください</div>
+      </div>
+      <button type="submit" id="submitBtn" class="submit-btn">
+        <span> LINEに戻り送信する</span>
       </button>
-    </div>
+    </form>
   </div>
-</div>
 
-<script>
-function validateForm() {
-  let isValid = true;
-  const fields = [
-    { id: 'addressDetail', errorId: 'addressError' },
-    { id: 'building', errorId: 'buildingError' },
-    { id: 'name', errorId: 'nameError' },
-    { id: 'message', errorId: 'messageError' }
-  ];
-  
-  // エラー表示をリセット
-  fields.forEach(field => {
-    document.getElementById(field.errorId).style.display = 'none';
-  });
-  
-  // 各フィールドを検証
-  fields.forEach(field => {
-    const value = document.getElementById(field.id).value.trim();
-    if (!value) {
-      document.getElementById(field.errorId).style.display = 'block';
-      isValid = false;
-      
-      // エラーのある入力フィールドをハイライト
-      document.getElementById(field.id).style.borderColor = 'var(--error-color)';
-    } else {
-      document.getElementById(field.id).style.borderColor = 'var(--border-color)';
-    }
-  });
-  
-  return isValid;
-}
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // モーダル処理
+      const modal = document.getElementById('infoModal');
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      modal.style.display = 'flex';
+      modalCloseBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
 
-function sendToLINE() {
-  if (!validateForm()) {
-    return false;
-  }
-  
-  const addressDetail = document.getElementById('addressDetail').value.trim();
-  const building = document.getElementById('building').value.trim();
-  const name = document.getElementById('name').value.trim();
-  const messageText = document.getElementById('message').value.trim();
-  
-  const fullAddress = `石巻市恵み野二丁目${addressDetail ? ' ' + addressDetail : ''}`;
-  const message = `◆住所\n${fullAddress}\n◆建物名\n${building}\n◆氏名\n${name}\n◆メッセージ\n${messageText}`;
-  const encodedMessage = encodeURIComponent(message);
-  
-  const lineUrl = `https://line.me/R/oaMessage/@973ycefu/?${encodedMessage}`;
-  
-  window.location.href = lineUrl;
-}
+      // 要素取得
+      const form = document.getElementById('visitForm');
+      const addressSuffix = document.getElementById('addressSuffix');
+      const name = document.getElementById('name');
+      const messageInput = document.getElementById('message');
+      const submitBtn = document.getElementById('submitBtn');
+      const addressSuffixError = document.getElementById('addressSuffixError');
+      const nameError = document.getElementById('nameError');
+      const messageError = document.getElementById('messageError');
 
-// 入力フィールドにフォーカスが当たった時にエラー表示を消す
-document.querySelectorAll('input, textarea').forEach(el => {
-  el.addEventListener('focus', function() {
-    this.style.borderColor = 'var(--primary-color)';
-    const fieldId = this.id;
-    const errorId = fieldId + 'Error';
-    document.getElementById(errorId).style.display = 'none';
-  });
-  
-  el.addEventListener('blur', function() {
-    if (this.value.trim() === '') {
-      this.style.borderColor = 'var(--border-color)';
-    }
-  });
-});
-</script>
+      // エラー非表示イベント
+      addressSuffix.addEventListener('input', () => {
+        addressSuffixError.style.display = 'none';
+      });
+      name.addEventListener('input', () => {
+        nameError.style.display = 'none';
+      });
+      messageInput.addEventListener('input', () => {
+        messageError.style.display = 'none';
+      });
+
+      // フォーム送信
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let isValid = true;
+        // 番地チェック
+        if (!addressSuffix.value.trim()) {
+          addressSuffixError.style.display = 'block';
+          isValid = false;
+        } else {
+          addressSuffixError.style.display = 'none';
+        }
+        // 氏名チェック
+        if (!name.value.trim()) {
+          nameError.style.display = 'block';
+          isValid = false;
+        } else {
+          nameError.style.display = 'none';
+        }
+        // メッセージチェック
+        if (!messageInput.value.trim()) {
+          messageError.style.display = 'block';
+          isValid = false;
+        } else {
+          messageError.style.display = 'none';
+        }
+        if (isValid) {
+          const originalBtnContent = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<span class="loading"></span>送信中...';
+          submitBtn.disabled = true;
+          const message =
+            `住所：石巻市恵み野二丁目${addressSuffix.value.trim()}\n` +
+            `氏名：${name.value.trim()}\n` +
+            `メッセージ：${messageInput.value.trim()};
+          const encoded = encodeURIComponent(message);
+          setTimeout(() => {
+            window.location.href = `https://line.me/R/oaMessage/@973ycefu/?${encoded}`;
+            submitBtn.innerHTML = originalBtnContent;
+            submitBtn.disabled = false;
+          }, 500);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
