@@ -235,7 +235,7 @@
   <div id="infoModal" class="modal">
     <div class="modal-content">
       <h2 class="modal-title">お知らせ</h2>
-      <p class="modal-text"班長宅が訪問頂きます。<br>ご希望の日時を入力してください。</p>
+      <p class="modal-text">班長宅に訪問頂きます。<br>ご希望の日時を入力してください。</p>
       <button class="modal-btn" id="modalCloseBtn">了解しました</button>
     </div>
   </div>
@@ -465,7 +465,8 @@
             `氏名：${name.value.trim()}\n` +
             `希望日：${dateInput.value}\n` +
             `希望時間：${timeInput.value}` +
-          `希望時間：${timeInput.value}`;
+          `希望時間：${timeInput.value}` +
+           `上記内容にて班長宅での支払いを希望します。`;
           
           // LINEに送信
           const encoded = encodeURIComponent(message);
