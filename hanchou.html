@@ -129,12 +129,6 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       text-align: center;
     }
-    .modal-image {
-      max-width: 100%;
-      height: auto;
-      border-radius: 4px;
-      margin-bottom: 16px;
-    }
     .modal-title { color: var(--primary-color); margin-bottom: 16px; font-size: 1.2rem; }
     .modal-text { margin-bottom: 24px; line-height: 1.6; }
     .modal-btn {
@@ -158,7 +152,6 @@
   <div id="infoModal" class="modal">
     <div class="modal-content">
       <h2 class="modal-title">お知らせ</h2>
-      <img src="S__67862625.jpg" alt="お知らせ画像" class="modal-image">
       <p class="modal-text">班長宅に訪問頂きます。<br>ご希望の日時を入力してください。</p>
       <button class="modal-btn" id="modalCloseBtn">了解しました</button>
     </div>
@@ -240,9 +233,8 @@
 
       [15,16,17,18,19].forEach(hour => {
         const btn = document.createElement('button');
-        btn.type = 'button'; 
-        btn.className = 'time-btn hour-btn';
-        btn.textContent = `${hour}時台`;
+        btn.type = 'button'; btn.className = 'time-btn hour-btn';
+        btn.textContent = ${hour}時台;
         btn.dataset.hour = hour;
         btn.addEventListener('click', () => {
           document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
@@ -251,18 +243,17 @@
           const minutes = (hour === 19) ? [0] : [0,15,30,45];
           minutes.forEach(min => {
             const mBtn = document.createElement('button');
-            mBtn.type = 'button'; 
-            mBtn.className = 'time-btn minute-btn';
+            mBtn.type = 'button'; mBtn.className = 'time-btn minute-btn';
             const hh = hour.toString().padStart(2,'0');
             const mm = min.toString().padStart(2,'0');
-            mBtn.textContent = `${hh}:${mm}`;
+            mBtn.textContent = ${hh}:${mm};
             mBtn.dataset.minute = mm;
             mBtn.addEventListener('click', () => {
               document.querySelectorAll('.minute-btn').forEach(b => b.classList.remove('selected'));
               mBtn.classList.add('selected');
-              const selected = `${hh}:${mm}`;
+              const selected = ${hh}:${mm};
               timeInput.value = selected;
-              timeDisplay.textContent = `選択された時間：${selected}`;
+              timeDisplay.textContent = 選択された時間：${selected};
               timeError.style.display = 'none';
             });
             minutePicker.appendChild(mBtn);
@@ -283,10 +274,10 @@
         const original = submitBtn.innerHTML;
         submitBtn.innerHTML = '<span class="loading"></span>送信中...';
         submitBtn.disabled = true;
-        const message = `住所：石巻市恵み野二丁目${addressSuffix.value.trim()}\n氏名：${nameInput.value.trim()}\n希望日：${dateInput.value}\n希望時間：${timeInput.value}\n上記内容にて班長宅での支払いを希望します。`;
+        const message = 住所：石巻市恵み野二丁目${addressSuffix.value.trim()}\n氏名：${nameInput.value.trim()}\n希望日：${dateInput.value}\n希望時間：${timeInput.value}\n上記内容にて班長宅での支払いを希望します。;
         const encoded = encodeURIComponent(message);
         setTimeout(() => {
-          window.location.href = `https://line.me/R/oaMessage/@973ycefu/?${encoded}`;
+          window.location.href = https://line.me/R/oaMessage/@973ycefu/?${encoded};
           submitBtn.innerHTML = original;
           submitBtn.disabled = false;
         }, 500);
