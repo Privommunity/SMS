@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>各戸訪問希望日程調整</title>
+  <title>町内会費訪問希望日程調整</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
   <style>
     :root {
@@ -241,7 +241,7 @@
   </div>
 
   <div class="container">
-    <h1>各戸訪問希望日程調整</h1>
+    <h1>町内会費訪問希望日程調整</h1>
     
     <form id="visitForm">
       <div class="form-group">
@@ -333,9 +333,7 @@
             // 水曜日を無効化
             return date.getDay() === 3;
           },
-          "2025-05-10"
-           "2025-05-18" 
-           "2025-05-31" // 特定の日を無効化
+          "2025-05-10" // 特定の日を無効化
         ],
         locale: {
           firstDayOfWeek: 0, // 日曜始まり
