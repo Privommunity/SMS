@@ -180,14 +180,14 @@
   </div>
 
   <div class="container">
-    <h1>振込に関するメッセージ/h1>
+    <h1>振込に関するメッセージ</h1>
     <form id="visitForm">
       <div class="form-group">
         <label for="address">住所</label>
         <input type="text" id="address" value="石巻市恵み野二丁目" disabled />
       </div>
       <div class="form-group">
-        <label for="addressSuffix">番地・建物名・部屋番号</label>
+        <label for="addressSuffix">番地・建物名・部屋番号</nlabel>
         <input type="text" id="addressSuffix" placeholder="例：1-2恵み野アパート101" />
         <div class="error" id="addressSuffixError">番地を入力してください</div>
       </div>
@@ -202,7 +202,7 @@
         <div class="error" id="messageError">メッセージを入力してください</div>
       </div>
       <button type="submit" id="submitBtn" class="submit-btn">
-        <span> LINEに戻り送信する</span>
+        <span>LINEに戻り送信する</span>
       </button>
     </form>
   </div>
@@ -229,41 +229,34 @@
       const messageError = document.getElementById('messageError');
 
       // エラー非表示イベント
-      addressSuffix.addEventListener('input', () => {
-        addressSuffixError.style.display = 'none';
-      });
-      name.addEventListener('input', () => {
-        nameError.style.display = 'none';
-      });
-      messageInput.addEventListener('input', () => {
-        messageError.style.display = 'none';
-      });
+      addressSuffix.addEventListener('input', () => { addressSuffixError.style.display = 'none'; });
+      name.addEventListener('input', () => { nameError.style.display = 'none'; });
+      messageInput.addEventListener('input', () => { messageError.style.display = 'none'; });
 
       // フォーム送信
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         let isValid = true;
-        // 番地チェック
+
         if (!addressSuffix.value.trim()) {
           addressSuffixError.style.display = 'block';
           isValid = false;
         } else {
           addressSuffixError.style.display = 'none';
         }
-        // 氏名チェック
         if (!name.value.trim()) {
           nameError.style.display = 'block';
           isValid = false;
         } else {
           nameError.style.display = 'none';
         }
-        // メッセージチェック
         if (!messageInput.value.trim()) {
           messageError.style.display = 'block';
           isValid = false;
         } else {
           messageError.style.display = 'none';
         }
+
         if (isValid) {
           const originalBtnContent = submitBtn.innerHTML;
           submitBtn.innerHTML = '<span class="loading"></span>送信中...';
@@ -271,7 +264,7 @@
           const message =
             `住所：石巻市恵み野二丁目${addressSuffix.value.trim()}\n` +
             `氏名：${name.value.trim()}\n` +
-            `メッセージ：${messageInput.value.trim()};
+            `メッセージ：${messageInput.value.trim()}`;
           const encoded = encodeURIComponent(message);
           setTimeout(() => {
             window.location.href = `https://line.me/R/oaMessage/@973ycefu/?${encoded}`;
