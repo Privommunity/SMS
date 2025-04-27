@@ -129,6 +129,12 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       text-align: center;
     }
+    .modal-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
     .modal-title { color: var(--primary-color); margin-bottom: 16px; font-size: 1.2rem; }
     .modal-text { margin-bottom: 24px; line-height: 1.6; }
     .modal-btn {
@@ -152,6 +158,7 @@
   <div id="infoModal" class="modal">
     <div class="modal-content">
       <h2 class="modal-title">お知らせ</h2>
+      <img src="S__67862625.jpg" alt="お知らせ画像" class="modal-image">
       <p class="modal-text">班長宅に訪問頂きます。<br>ご希望の日時を入力してください。</p>
       <button class="modal-btn" id="modalCloseBtn">了解しました</button>
     </div>
@@ -233,7 +240,8 @@
 
       [15,16,17,18,19].forEach(hour => {
         const btn = document.createElement('button');
-        btn.type = 'button'; btn.className = 'time-btn hour-btn';
+        btn.type = 'button'; 
+        btn.className = 'time-btn hour-btn';
         btn.textContent = `${hour}時台`;
         btn.dataset.hour = hour;
         btn.addEventListener('click', () => {
@@ -243,7 +251,8 @@
           const minutes = (hour === 19) ? [0] : [0,15,30,45];
           minutes.forEach(min => {
             const mBtn = document.createElement('button');
-            mBtn.type = 'button'; mBtn.className = 'time-btn minute-btn';
+            mBtn.type = 'button'; 
+            mBtn.className = 'time-btn minute-btn';
             const hh = hour.toString().padStart(2,'0');
             const mm = min.toString().padStart(2,'0');
             mBtn.textContent = `${hh}:${mm}`;
