@@ -5,26 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>恵み野東町内会5班</title>
     <style>
+        :root {
+            --cash-home-color: #2E7D32;
+            --cash-visit-color: #1565C0;
+            --bank-color: #EF6C00;
+            --paypay-color: #f44336;
+            --example-color: #455A64;
+        }
         body {
             font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             justify-content: center;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: #03A9F4;
+            color: white;
+            padding: 16px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .container {
-            padding: 20px;
-            max-width: 100%;
-            margin: 0 auto;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         h1 {
             color: #333;
             text-align: center;
-            font-size: 7vw;
-            margin-bottom: 20px;
+            font-size: 6vw;
+            margin: 0 0 8px 0;
+        }
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 24px;
+            font-size: 3.5vw;
+            padding: 0 10px;
         }
         .button-group {
             display: flex;
@@ -37,39 +63,59 @@
             align-items: center;
             color: white;
             padding: 16px;
-            font-size: 5vw;
+            font-size: 4.5vw;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
             position: relative;
+            transition: all 0.2s ease;
         }
         .btn:after {
             content: "→";
             position: absolute;
-            right: 20px;
-            font-size: 6vw;
+            right: 16px;
+            font-size: 5vw;
+            transition: transform 0.2s ease;
         }
-        .btn-cash-home { background-color: #4CAF50; }
-        .btn-cash-visit { background-color: #2196F3; }
-        .btn-bank     { background-color: #ff9800; }
-        .btn-paypay   { background-color: #f44336; }
-        .btn-example  { background-color: #607d8b; }
-        .btn:hover { opacity: 0.9; }
-        .btn:active { transform: translateY(2px); }
-        .btn-text { flex: 1; text-align: left; padding-left: 10px; }
+        .btn-cash-home { background-color: var(--cash-home-color); }
+        .btn-cash-visit { background-color: var(--cash-visit-color); }
+        .btn-bank { background-color: var(--bank-color); }
+        .btn-paypay { background-color: var(--paypay-color); }
+        .btn-example { background-color: var(--example-color); }
+        
+        .btn:hover { 
+            opacity: 0.9; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn:hover:after {
+            transform: translateX(4px);
+        }
+        .btn:active { 
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+        }
+        .btn-text { 
+            flex: 1; 
+            text-align: left; 
+            padding-left: 10px; 
+        }
         .btn-number {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background-color: rgba(255,255,255,0.3);
-            width: 8vw;
-            height: 8vw;
-            line-height: 8vw;
+            width: 7vw;
+            height: 7vw;
             border-radius: 50%;
             text-align: center;
             font-weight: bold;
+            font-size: 4vw;
         }
-        /* Modal styles */
+        
+        /* モーダルスタイル */
         .modal {
             display: none;
             position: fixed;
@@ -77,81 +123,177 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.7);
             align-items: center;
             justify-content: center;
             z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
         }
         .modal-content {
             background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 90%;
-            max-height: 90%;
+            padding: 24px;
+            border-radius: 12px;
+            max-width: 85%;
+            max-height: 85%;
             position: relative;
             overflow: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
         }
         .modal-content img {
             width: 100%;
             height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .modal-title {
+            font-size: 5vw;
+            margin-top: 0;
+            color: #333;
         }
         .modal-close {
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 2rem;
+            font-size: 6vw;
             cursor: pointer;
+            color: #666;
+            width: 8vw;
+            height: 8vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+        .modal-close:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* フッター */
+        .footer {
+            text-align: center;
+            padding: 16px;
+            color: #666;
+            font-size: 3vw;
+            margin-top: 30px;
+        }
+        
+        /* タブレット・PCサイズ対応 */
+        @media (min-width: 768px) {
+            h1 { font-size: 32px; }
+            .description { font-size: 16px; }
+            .btn { font-size: 18px; }
+            .btn:after { font-size: 22px; }
+            .btn-number { 
+                width: 32px;
+                height: 32px;
+                font-size: 18px;
+            }
+            .modal-title { font-size: 22px; }
+            .footer { font-size: 14px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
         <h1>恵み野東町内会5班</h1>
+    </div>
+    
+    <div class="container">
+        <p class="description">町内会費のお支払い方法をお選びください</p>
+        
         <div class="button-group">
-            <a href="https://privommunity.github.io/LINE/hanchou.html" class="btn btn-cash-home">
+            <a href="https://privommunity.github.io/LINE/hanchou.html" class="btn btn-cash-home" aria-label="現金で班長宅に持参">
                 <span class="btn-number">1</span>
                 <span class="btn-text">現金（班長宅持参）</span>
             </a>
-            <a href="https://privommunity.github.io/LINE/houmon.html" class="btn btn-cash-visit">
+            
+            <a href="https://privommunity.github.io/LINE/houmon.html" class="btn btn-cash-visit" aria-label="現金で各戸訪問">
                 <span class="btn-number">2</span>
                 <span class="btn-text">現金（各戸訪問）</span>
             </a>
-            <a href="https://privommunity.github.io/LINE/" class="btn btn-bank">
+            
+            <a href="https://privommunity.github.io/LINE/" class="btn btn-bank" aria-label="銀行振込">
                 <span class="btn-number">3</span>
                 <span class="btn-text">振込</span>
             </a>
-            <a href="https://privommunity.github.io/paypay/" class="btn btn-paypay">
+            
+            <a href="https://privommunity.github.io/paypay/" class="btn btn-paypay" aria-label="PayPay送金">
                 <span class="btn-number">4</span>
                 <span class="btn-text">PayPay送金</span>
             </a>
-            <!-- 新しい項目: メッセージ送信完了後の例 -->
-            <button id="exampleBtn" class="btn btn-example">
+            
+            <button id="exampleBtn" class="btn btn-example" aria-label="メッセージ送信完了後の例">
                 <span class="btn-text">＊メッセージ送信完了後の例</span>
             </button>
         </div>
     </div>
-    <!-- モーダル構造 -->
+    
+    <!-- モーダル -->
     <div id="exampleModal" class="modal">
         <div class="modal-content">
-            <span id="modalClose" class="modal-close">&times;</span>
-            <p>メッセージ送信完了後の例</p>
-            <img src="S__67862625.jpg" alt="メッセージ送信完了後の例">
+            <span id="modalClose" class="modal-close" aria-label="閉じる">&times;</span>
+            <h3 class="modal-title">メッセージ送信完了後の例</h3>
+            <div id="imageContainer">
+                <img src="S__67862625.jpg" alt="メッセージ送信完了後の例" id="exampleImage">
+            </div>
         </div>
     </div>
+    
+    <div class="footer">
+        © 2025 恵み野東町内会 | お問い合わせ: <a href="mailto:info@example.com">info@example.com</a>
+    </div>
+    
     <script>
-        // ポップアップ表示処理
-        document.getElementById('exampleBtn').addEventListener('click', function() {
-            document.getElementById('exampleModal').style.display = 'flex';
+        // モーダル表示処理
+        const modal = document.getElementById('exampleModal');
+        const btn = document.getElementById('exampleBtn');
+        const closeBtn = document.getElementById('modalClose');
+        const exampleImage = document.getElementById('exampleImage');
+        
+        btn.addEventListener('click', function() {
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
         });
+        
         // 閉じるボタン
-        document.getElementById('modalClose').addEventListener('click', function() {
-            document.getElementById('exampleModal').style.display = 'none';
-        });
+        closeBtn.addEventListener('click', closeModal);
+        
         // モーダル外をクリックしたら閉じる
         window.addEventListener('click', function(e) {
-            if (e.target === document.getElementById('exampleModal')) {
-                document.getElementById('exampleModal').style.display = 'none';
+            if (e.target === modal) {
+                closeModal();
             }
+        });
+        
+        // Escキーでも閉じる
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+        
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        // 画像読み込みエラー処理
+        exampleImage.addEventListener('error', function() {
+            this.src = 'https://via.placeholder.com/400x600?text=画像が見つかりません';
         });
     </script>
 </body>
