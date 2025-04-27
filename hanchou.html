@@ -328,15 +328,15 @@
       const datePicker = flatpickr("#date", {
         dateFormat: "Y年m月d日(D)",
         minDate: "today",
-        disable: [
-          function(date) {
-            // 水曜日を無効化
-            return date.getDay() === 3;
-          },
-          "2025-05-10" 
-           "2025-05-18"
-           "2025-05-31"// 特定の日を無効化
-        ],
+       disable: [
+  function(date) {
+    // 水曜日を無効化
+    return date.getDay() === 3;
+  },
+  "2025-05-10" 
+   "2025-05-18"
+   "2025-05-31"// 特定の日を無効化
+],
         locale: {
           firstDayOfWeek: 0, // 日曜始まり
           weekdays: {
@@ -461,12 +461,12 @@
           
           // メッセージを作成
           const message =
-            `住所：石巻市恵み野二丁目${addressSuffix.value.trim()}\n` +
-            `氏名：${name.value.trim()}\n` +
-            `希望日：${dateInput.value}\n` +
-            `希望時間：${timeInput.value}` +
-          `希望時間：${timeInput.value}` +
-           `上記内容にて班長宅での支払いを希望します。`;
+  `住所：石巻市恵み野二丁目${addressSuffix.value.trim()}\n` +
+  `氏名：${name.value.trim()}\n` +
+  `希望日：${dateInput.value}\n` +
+  `希望時間：${timeInput.value}` +
+`希望時間：${timeInput.value}` +
+ `上記内容にて班長宅での支払いを希望します。`;
           
           // LINEに送信
           const encoded = encodeURIComponent(message);
