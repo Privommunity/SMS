@@ -1,279 +1,494 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>振込に関するメッセージ</title>
-  <style>
-    :root {
-      --primary-color: #06C755;
-      --primary-hover: #05a648;
-      --background-color: #f8f9fa;
-      --text-color: #333;
-      --border-color: #ddd;
-      --error-color: #d9534f;
-      --success-color: #5cb85c;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
-      background-color: var(--background-color);
-      color: var(--text-color);
-      line-height: 1.6;
-      padding: 20px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .container {
-      background-color: white;
-      border-radius: 8px;
-      padding: 24px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      color: var(--primary-color);
-      margin-bottom: 24px;
-      text-align: center;
-      font-size: 1.5rem;
-      position: relative;
-      padding-bottom: 10px;
-    }
-    h1:after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background-color: var(--primary-color);
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-    input[type="text"]:focus {
-      border-color: var(--primary-color);
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(6, 199, 85, 0.2);
-    }
-    input[disabled] {
-      background-color: #f3f3f3;
-      cursor: not-allowed;
-    }
-    .submit-btn {
-      display: block;
-      width: 100%;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 12px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      margin-top: 30px;
-      font-weight: bold;
-    }
-    .submit-btn:hover {
-      background-color: var(--primary-hover);
-    }
-    .error {
-      color: var(--error-color);
-      font-size: 0.85rem;
-      margin-top: 5px;
-      display: none;
-    }
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    /* モーダルのスタイル */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background-color: white;
-      padding: 24px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      text-align: center;
-    }
-    .modal-title {
-      color: var(--primary-color);
-      margin-bottom: 16px;
-      font-size: 1.2rem;
-    }
-    .modal-text {
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-    .modal-btn {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .modal-btn:hover {
-      background-color: var(--primary-hover);
-    }
-    @media (max-width: 480px) {
-      .container {
-        padding: 16px;
-      }
-      h1 {
-        font-size: 1.3rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>振り込みに関するメッセージ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .step.completed {
+            background: #4caf50;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .address-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .address-fixed {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            color: #666;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            margin-right: 10px;
+            width: calc(50% - 5px);
+        }
+
+        .btn-primary {
+            width: calc(50% - 5px);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .modal-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .example-text {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #666;
+            border-left: 4px solid #667eea;
+        }
+
+        .preview-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .preview-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .preview-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-line;
+            color: #555;
+            line-height: 1.6;
+            border: 1px solid #e0e0e0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .address-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn-secondary, .btn-primary {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- モーダルダイアログ -->
-  <div id="infoModal" class="modal">
-    <div class="modal-content">
-      <h2 class="modal-title">お知らせ</h2>
-      <p class="modal-text">必要事項を入力後末尾のボタンを押すとLINE画面に戻ります<br>戻りましたら、入力内容をそのまま送信してください。</p>
-      <button class="modal-btn" id="modalCloseBtn">了解しました</button>
+    <!-- Modal -->
+    <div id="instructionModal" class="modal">
+        <div class="modal-content">
+            <h2>ご利用方法</h2>
+            <p>必要事項を入力後末尾のボタンを押すとショートメール画面に移動します。<br>移動したら、入力内容をそのまま送信してください。</p>
+            <button class="btn" onclick="closeModal()">分かりました</button>
+        </div>
     </div>
-  </div>
 
-  <div class="container">
-    <h1>振込に関するメッセージ</h1>
-    <form id="visitForm">
-      <div class="form-group">
-        <label for="address">住所</label>
-        <input type="text" id="address" value="石巻市恵み野二丁目" disabled />
-      </div>
-      <div class="form-group">
-        <label for="addressSuffix">番地・建物名・部屋番号</nlabel>
-        <input type="text" id="addressSuffix" placeholder="例：1-2恵み野アパート101" />
-        <div class="error" id="addressSuffixError">番地を入力してください</div>
-      </div>
-      <div class="form-group">
-        <label for="name">氏名</label>
-        <input type="text" id="name" placeholder="例：石巻太郎" />
-        <div class="error" id="nameError">氏名を入力してください</div>
-      </div>
-      <div class="form-group">
-        <label for="message">メッセージ</label>
-        <input type="text" id="message" placeholder="例：宮城花子名義にて振込完了しました。" />
-        <div class="error" id="messageError">メッセージを入力してください</div>
-      </div>
-      <button type="submit" id="submitBtn" class="submit-btn">
-        <span>LINEに戻り送信する</span>
-      </button>
-    </form>
-  </div>
+    <div class="container">
+        <h1>振り込みに関するメッセージ</h1>
+        
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" id="step1">1</div>
+            <div class="step" id="step2">2</div>
+            <div class="step" id="step3">3</div>
+            <div class="step" id="step4">4</div>
+        </div>
 
-  <!-- JavaScript -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // モーダル処理
-      const modal = document.getElementById('infoModal');
-      const modalCloseBtn = document.getElementById('modalCloseBtn');
-      modal.style.display = 'flex';
-      modalCloseBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-      });
+        <form id="smsForm">
+            <!-- Step 1: Address -->
+            <div class="form-step active" id="formStep1">
+                <div class="form-group">
+                    <label for="addressDetail">住所詳細</label>
+                    <div class="address-group">
+                        <div class="address-fixed">石巻市恵み野2丁目</div>
+                    </div>
+                    <input type="text" id="addressDetail" name="addressDetail" placeholder="番地・建物名・部屋番号を入力してください" required>
+                </div>
+                <button type="button" class="btn" onclick="nextStep(1)">次へ</button>
+            </div>
 
-      // 要素取得
-      const form = document.getElementById('visitForm');
-      const addressSuffix = document.getElementById('addressSuffix');
-      const name = document.getElementById('name');
-      const messageInput = document.getElementById('message');
-      const submitBtn = document.getElementById('submitBtn');
-      const addressSuffixError = document.getElementById('addressSuffixError');
-      const nameError = document.getElementById('nameError');
-      const messageError = document.getElementById('messageError');
+            <!-- Step 2: Name -->
+            <div class="form-step" id="formStep2">
+                <div class="form-group">
+                    <label for="fullName">お名前</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="お名前を入力してください" required>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)">戻る</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(2)">次へ</button>
+                </div>
+            </div>
 
-      // エラー非表示イベント
-      addressSuffix.addEventListener('input', () => { addressSuffixError.style.display = 'none'; });
-      name.addEventListener('input', () => { nameError.style.display = 'none'; });
-      messageInput.addEventListener('input', () => { messageError.style.display = 'none'; });
+            <!-- Step 3: Message -->
+            <div class="form-step" id="formStep3">
+                <div class="form-group">
+                    <label for="message">メッセージ</label>
+                    <div class="example-text">
+                        例：石巻太郎名義にて振り込み完了しました。
+                    </div>
+                    <textarea id="message" name="message" placeholder="メッセージを入力してください" required></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(3)">戻る</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(3)">次へ</button>
+                </div>
+            </div>
 
-      // フォーム送信
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        let isValid = true;
+            <!-- Step 4: Preview and Send -->
+            <div class="form-step" id="formStep4">
+                <div class="preview-section">
+                    <h3>送信内容の確認</h3>
+                    <div class="preview-content" id="previewContent"></div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(4)">戻る</button>
+                    <button type="button" class="btn btn-primary" onclick="sendSMS()">SMS送信</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-        if (!addressSuffix.value.trim()) {
-          addressSuffixError.style.display = 'block';
-          isValid = false;
-        } else {
-          addressSuffixError.style.display = 'none';
-        }
-        if (!name.value.trim()) {
-          nameError.style.display = 'block';
-          isValid = false;
-        } else {
-          nameError.style.display = 'none';
-        }
-        if (!messageInput.value.trim()) {
-          messageError.style.display = 'block';
-          isValid = false;
-        } else {
-          messageError.style.display = 'none';
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Show modal on page load
+        window.onload = function() {
+            document.getElementById('instructionModal').style.display = 'flex';
         }
 
-        if (isValid) {
-          const originalBtnContent = submitBtn.innerHTML;
-          submitBtn.innerHTML = '<span class="loading"></span>送信中...';
-          submitBtn.disabled = true;
-          const message =
-            `住所：石巻市恵み野二丁目${addressSuffix.value.trim()}\n` +
-            `氏名：${name.value.trim()}\n` +
-            `メッセージ：${messageInput.value.trim()}`;
-          const encoded = encodeURIComponent(message);
-          setTimeout(() => {
-            window.location.href = `https://line.me/R/oaMessage/@973ycefu/?${encoded}`;
-            submitBtn.innerHTML = originalBtnContent;
-            submitBtn.disabled = false;
-          }, 500);
+        function closeModal() {
+            document.getElementById('instructionModal').style.display = 'none';
         }
-      });
-    });
-  </script>
+
+        function updateStepIndicator() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const step = document.getElementById(`step${i}`);
+                step.classList.remove('active', 'completed');
+                
+                if (i < currentStep) {
+                    step.classList.add('completed');
+                } else if (i === currentStep) {
+                    step.classList.add('active');
+                }
+            }
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`formStep${i}`).classList.remove('active');
+            }
+            
+            // Show current step
+            document.getElementById(`formStep${step}`).classList.add('active');
+            updateStepIndicator();
+        }
+
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    const addressDetail = document.getElementById('addressDetail').value.trim();
+                    if (!addressDetail) {
+                        alert('番地・建物名・部屋番号を入力してください。');
+                        return false;
+                    }
+                    break;
+                case 2:
+                    const fullName = document.getElementById('fullName').value.trim();
+                    if (!fullName) {
+                        alert('お名前を入力してください。');
+                        return false;
+                    }
+                    break;
+                case 3:
+                    const message = document.getElementById('message').value.trim();
+                    if (!message) {
+                        alert('メッセージを入力してください。');
+                        return false;
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        function nextStep(step) {
+            if (!validateStep(step)) {
+                return;
+            }
+
+            if (step < totalSteps) {
+                currentStep = step + 1;
+                showStep(currentStep);
+                
+                // If moving to step 4, update preview
+                if (currentStep === 4) {
+                    updatePreview();
+                }
+            }
+        }
+
+        function prevStep(step) {
+            if (step > 1) {
+                currentStep = step - 1;
+                showStep(currentStep);
+            }
+        }
+
+        function updatePreview() {
+            const addressDetail = document.getElementById('addressDetail').value.trim();
+            const fullName = document.getElementById('fullName').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            const fullAddress = `石巻市恵み野2丁目${addressDetail}`;
+            
+            const previewText = `住所: ${fullAddress}
+氏名: ${fullName}
+メッセージ: ${message}`;
+            
+            document.getElementById('previewContent').textContent = previewText;
+        }
+
+        function sendSMS() {
+            const addressDetail = document.getElementById('addressDetail').value.trim();
+            const fullName = document.getElementById('fullName').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            if (!addressDetail || !fullName || !message) {
+                alert('すべての項目を入力してください。');
+                return;
+            }
+            
+            const fullAddress = `石巻市恵み野2丁目${addressDetail}`;
+            
+            const smsBody = `住所: ${fullAddress}
+氏名: ${fullName}
+メッセージ: ${message}`;
+            
+            const phoneNumber = '07042171519';
+            const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(smsBody)}`;
+            
+            // Try to open SMS app
+            try {
+                window.location.href = smsUrl;
+            } catch (error) {
+                // Fallback for desktop browsers
+                alert(`SMS送信用のリンクを開けませんでした。\n\n送信先: ${phoneNumber}\n\n内容:\n${smsBody}\n\n手動でSMSアプリを開いて上記内容を送信してください。`);
+            }
+        }
+
+        // Initialize
+        showStep(1);
+    </script>
 </body>
 </html>
+
