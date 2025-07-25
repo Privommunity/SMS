@@ -48,6 +48,35 @@
             margin-bottom: 30px;
             font-size: 24px;
             font-weight: 600;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #5a6268;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .back-button.show {
+            display: flex;
         }
 
         .form-step {
@@ -115,6 +144,7 @@
             font-size: 16px;
             transition: all 0.3s ease;
             background: #fafafa;
+            animation: inputPulse 2s ease-in-out infinite;
         }
 
         input[type="text"]:focus, textarea:focus {
@@ -122,6 +152,18 @@
             border-color: #667eea;
             background: white;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            animation: none;
+        }
+
+        @keyframes inputPulse {
+            0%, 100% {
+                border-color: #e0e0e0;
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+            }
+            50% {
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            }
         }
 
         textarea {
@@ -172,15 +214,20 @@
             background: #6c757d;
             margin-right: 10px;
             width: calc(50% - 5px);
+            display: none; /* 戻るボタンを非表示 */
         }
 
         .btn-primary {
-            width: calc(50% - 5px);
+            width: 100%; /* 次へボタンを全幅に */
         }
 
         .button-group {
             display: flex;
             gap: 10px;
+        }
+
+        .button-group .btn-primary {
+            width: 100%;
         }
 
         /* Modal styles */
@@ -271,13 +318,20 @@
                 align-items: stretch;
             }
             
-            .button-group {
-                flex-direction: column;
+            .back-button {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
             }
             
-            .btn-secondary, .btn-primary {
-                width: 100%;
-                margin-bottom: 10px;
+            h1 {
+                font-size: 20px;
+                padding-left: 45px;
+            }
+            
+            .btn {
+                padding: 18px;
+                font-size: 18px;
             }
         }
     </style>
@@ -293,7 +347,10 @@
     </div>
 
     <div class="container">
-        <h1>振り込みに関するメッセージ</h1>
+        <h1>
+            <button class="back-button" id="backButton" onclick="goBack()">←</button>
+            振り込みに関するメッセージ
+        </h1>
         
         <!-- Step Indicator -->
         <div class="step-indicator">
@@ -322,10 +379,7 @@
                     <label for="fullName">お名前</label>
                     <input type="text" id="fullName" name="fullName" placeholder="お名前を入力してください" required>
                 </div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)">戻る</button>
-                    <button type="button" class="btn btn-primary" onclick="nextStep(2)">次へ</button>
-                </div>
+                <button type="button" class="btn btn-primary" onclick="nextStep(2)">次へ</button>
             </div>
 
             <!-- Step 3: Message -->
@@ -337,10 +391,7 @@
                     </div>
                     <textarea id="message" name="message" placeholder="メッセージを入力してください" required></textarea>
                 </div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-secondary" onclick="prevStep(3)">戻る</button>
-                    <button type="button" class="btn btn-primary" onclick="nextStep(3)">次へ</button>
-                </div>
+                <button type="button" class="btn btn-primary" onclick="nextStep(3)">次へ</button>
             </div>
 
             <!-- Step 4: Preview and Send -->
@@ -349,10 +400,7 @@
                     <h3>送信内容の確認</h3>
                     <div class="preview-content" id="previewContent"></div>
                 </div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-secondary" onclick="prevStep(4)">戻る</button>
-                    <button type="button" class="btn btn-primary" onclick="sendSMS()">SMS送信画面へ</button>
-                </div>
+                <button type="button" class="btn btn-primary" onclick="sendSMS()">SMS送信画面へ</button>
             </div>
         </form>
     </div>
@@ -380,6 +428,21 @@
                 } else if (i === currentStep) {
                     step.classList.add('active');
                 }
+            }
+            
+            // 戻るボタンの表示制御
+            const backButton = document.getElementById('backButton');
+            if (currentStep > 1) {
+                backButton.classList.add('show');
+            } else {
+                backButton.classList.remove('show');
+            }
+        }
+
+        function goBack() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
             }
         }
 
@@ -434,13 +497,6 @@
                 if (currentStep === 4) {
                     updatePreview();
                 }
-            }
-        }
-
-        function prevStep(step) {
-            if (step > 1) {
-                currentStep = step - 1;
-                showStep(currentStep);
             }
         }
 
